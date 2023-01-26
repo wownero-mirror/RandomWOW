@@ -296,14 +296,14 @@ FORCE_INLINE __m128ll vrev(__m128i v){
 #endif
 }
 
-FORCE_INLINE rx_vec_i128 rx_aesenc_vec_i128(rx_vec_i128 v, rx_vec_i128 rkey) {
+FORCE_INLINE rx_vec_i128 rx_aesenc_vec_i128(rx_vec_i128, rx_vec_i128) {
 	__m128ll _v = vrev(v);
 	__m128ll _rkey = vrev(rkey);
 	__m128ll result = vrev((__m128i)__builtin_crypto_vcipher(_v,_rkey));
 	return (rx_vec_i128)result;
 }
 
-FORCE_INLINE rx_vec_i128 rx_aesdec_vec_i128(rx_vec_i128 v, rx_vec_i128 rkey) {
+FORCE_INLINE rx_vec_i128 rx_aesdec_vec_i128(rx_vec_i128, rx_vec_i128) {
 	__m128ll _v = vrev(v);
 	__m128ll zero = (__m128ll){0};
 	__m128ll out = vrev((__m128i)__builtin_crypto_vncipher(_v,zero));
@@ -722,11 +722,11 @@ static const char* platformError = "Platform doesn't support hardware AES";
 
 #include <stdexcept>
 
-FORCE_INLINE rx_vec_i128 rx_aesenc_vec_i128(rx_vec_i128 v, rx_vec_i128 rkey) {
+FORCE_INLINE rx_vec_i128 rx_aesenc_vec_i128(rx_vec_i128, rx_vec_i128) {
 	throw std::runtime_error(platformError);
 }
 
-FORCE_INLINE rx_vec_i128 rx_aesdec_vec_i128(rx_vec_i128 v, rx_vec_i128 rkey) {
+FORCE_INLINE rx_vec_i128 rx_aesdec_vec_i128(rx_vec_i128, rx_vec_i128) {
 	throw std::runtime_error(platformError);
 }
 
